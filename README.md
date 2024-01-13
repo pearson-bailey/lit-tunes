@@ -10,14 +10,14 @@ Lit Tunes is a Typescript project utilizing Supabase for DB and Auth, paired wit
   <a href="#local-environment"><strong>Local Environment</strong></a> ·
   <a href="#dependencies"><strong>Dependencies</strong></a> ·
   <a href="#setup"><strong>Set-up</strong></a> ·
-  <a href="#teardown"><strong>Teardown</strong></a>
-  <a href="#testing"><strong>Testing</strong></a>
-  <a href="#unit-testing"><strong>Unit Testing</strong></a>
-  <a href="#automated-end-to-end-(e2e)-testing"><strong>Automated End-to-End (E2E) Testing</strong></a>
+  <a href="#teardown"><strong>Teardown</strong></a> ·
+  <a href="#testing"><strong>Testing</strong></a> ·
+  <a href="#unit-testing"><strong>Unit Testing</strong></a> ·
+  <a href="#automated-end-to-end-e2e-testing"><strong>Automated End-to-End (E2E) Testing</strong></a>
 </p>
 <br/>
 
-## Tech Stack
+## TECH STACK
 
 - <a href="https://nextjs.org/docs/getting-started/installation"><strong>Next.js</strong></a>
 - <a href="https://supabase.com/docs/guides/getting-started/quickstarts/nextjs"><strong>Supabase</strong></a>
@@ -25,7 +25,7 @@ Lit Tunes is a Typescript project utilizing Supabase for DB and Auth, paired wit
   <br/>
   <br/>
 
-## Installed Packages
+## PACKAGES
 
 - <a href="https://github.com/tailwindlabs/headlessui?tab=readme-ov-file"><strong>Headless UI</strong></a>
   <i>"Completely unstyled, fully accessible UI components, designed to integrate with Tailwind CSS."</i>
@@ -50,7 +50,7 @@ Lit Tunes is a Typescript project utilizing Supabase for DB and Auth, paired wit
   <br/>
   <br/>
 
-## Local Environment
+## LOCAL ENVIRONMENT
 
 ### Dependencies
 
@@ -77,14 +77,14 @@ Lit Tunes is a Typescript project utilizing Supabase for DB and Auth, paired wit
   <br/>
   <br/>
 
-## Linting
+## LINTING
 
 - Code analysis configured using the <a href="https://nextjs.org/docs/pages/building-your-application/configuring/eslint"><strong>ESLint</strong></a> linting utility
 - Run linting analysis with `npm run lint`
   <br/>
   <br/>
 
-## Testing
+## TESTING
 
 ### Unit Testing
 
