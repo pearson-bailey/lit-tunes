@@ -80,7 +80,7 @@ Lit Tunes is a Typescript project utilizing Supabase for DB and Auth, paired wit
 ## Linting
 
 - Code analysis configured using the <a href="https://nextjs.org/docs/pages/building-your-application/configuring/eslint"><strong>ESLint</strong></a> linting utility
-- Run
+- Run linting analysis with `npm run lint`
   <br/>
   <br/>
 
