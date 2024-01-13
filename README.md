@@ -6,11 +6,12 @@ Lit Tunes is a Typescript project utilizing Supabase for DB and Auth, paired wit
 
 <p align="center">
   <a href="#tech-stack"><strong>Tech Stack</strong></a> ·
-  <a href="#installed-packages"><strong>Installed Packages</strong></a> ·
+  <a href="#packages"><strong>Packages</strong></a> ·
   <a href="#local-environment"><strong>Local Environment</strong></a> ·
   <a href="#dependencies"><strong>Dependencies</strong></a> ·
   <a href="#setup"><strong>Set-up</strong></a> ·
   <a href="#teardown"><strong>Teardown</strong></a> ·
+  <a href="#linting"><strong>Linting</strong></a> ·
   <a href="#testing"><strong>Testing</strong></a> ·
   <a href="#unit-testing"><strong>Unit Testing</strong></a> ·
   <a href="#automated-end-to-end-e2e-testing"><strong>Automated End-to-End (E2E) Testing</strong></a>
