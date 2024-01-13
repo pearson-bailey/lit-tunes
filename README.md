@@ -55,8 +55,8 @@ Lit Tunes is a Typescript project utilizing Supabase for DB and Auth, paired wit
 
 ### Dependencies
 
-- Node v20.10.0
-- Npx v10.2.3
+- Node v20.11.0
+- Npx v10.2.4
 - Docker v.24.0.7
 - VS Code IDE
   <br/>
