@@ -31,7 +31,7 @@ Lit Tunes is a Typescript project utilizing Supabase for DB and Auth, paired wit
 - <a href="https://github.com/tailwindlabs/headlessui?tab=readme-ov-file"><strong>Headless UI</strong></a>
   <i>"Completely unstyled, fully accessible UI components, designed to integrate with Tailwind CSS."</i>
   <br/>
-- <a href="https://github.com/tailwindlabs/heroicons?tab=readme-ov-file"><strong>HeroIcons</strong></a>
+- <a href="https://github.com/tailwindlabs/heroicons?tab=readme-ov-file"><strong>heroicons</strong></a>
   <i>"Free, MIT-licensed, high-quality SVG icons, by the makers of Tailwind CSS."</i>
   <br/>
 - <a href="https://www.framer.com/motion/introduction/"><strong>Framer-Motion</strong></a>
