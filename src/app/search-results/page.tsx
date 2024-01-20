@@ -9,6 +9,7 @@ import {
   useState,
 } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
+import { motion } from "framer-motion";
 
 export default function SearchResults() {
   const [genres, setGenres] = useState<Genre[] | null>(null);
@@ -67,14 +68,13 @@ export default function SearchResults() {
 
   return (
     <>
-      <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2">
+      <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-start gap-2">
         <form
-          className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground"
+          className="animate-in flex-1 flex-col md:flex-row w-full justify-center items-center gap-3 text-foreground my-6"
           onSubmit={handleSubmit}
         >
-          <label className="text-md" htmlFor="email"></label>
           <select
-            className="rounded-md px-4 py-2 bg-inherit border mb-6"
+            className="rounded-md py-2 bg-inherit border"
             name="genre"
             placeholder={genres ? genres[0].display_name : "Choose a genre"}
             onChange={handleGenreChange}
@@ -87,12 +87,12 @@ export default function SearchResults() {
                 ))
               : null}
           </select>
-          <button className="bg-green-700 rounded-md px-4 py-2 text-foreground mb-2">
+          <button className="bg-green-700 hover:bg-green-600 rounded-md px-4 py-2 text-foreground min-w-fit">
             Filter Books
           </button>
         </form>
       </div>
-      <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-4 grid-flow-row-dense">
+      <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-4 grid-flow-row-dense mx-4 items-center">
         {books
           ? books.map((book, idx) => (
               <>
@@ -101,28 +101,37 @@ export default function SearchResults() {
                   className="cursor-pointer"
                 >
                   <img
-                    className="w-full"
+                    className="w-full rounded-lg border border-white"
                     key={idx}
                     src={book.book_image}
                     alt={book.title}
                   />
                 </a>
                 {index == idx ? (
-                  <div className="animate-in delay-1000 grid grid-cols-subgrid gap-8 lg:col-span-4 md:col-span-3 sm:col-span-2 my-8 p-8 border border-white rounded-md">
+                  <motion.div
+                    className="lg:flex md:flex lg:col-span-4 md:col-span-3 sm:col-span-2 md:m-8 p-8 border border-white rounded-md"
+                    initial={{ opacity: 0, scaleX: 0 }}
+                    animate={{ opacity: 1, scaleX: 1 }}
+                    transition={{
+                      delay: 0.66,
+                      type: "spring",
+                      bounce: 0.33,
+                    }}
+                  >
                     <img
-                      className="cursor-pointer lg:col-start-1 lg:col-end-3 md:col-start-1 md:col-end-2 sm:col-start-1 sm:col-end-2 w-full"
+                      className="cursor-pointer lg:w-1/3 md:w-1/2 sm:block hidden"
                       key={idx}
                       src={book.book_image}
                       alt={book.title}
                     />
                     <div
-                      className="lg:col-start-3 lg:col-end-5 md:col-start-2 md:col-end-4 sm:col-start-2 sm:col-end-3 flex flex-col w-11/12"
+                      className="lg:w-2/3 md:w-1/2 sm:w-full flex flex-col pl-4"
                       ref={scrollToRef}
                     >
-                      <div className="flex justify-between">
-                        <h1>{book.title}</h1>
+                      <div className="relative">
+                        <h1 className="mt-8 md:mt-0">{book.title}</h1>
                         <button
-                          className="absolute right-8 top-8"
+                          className="absolute -right-2 -top-2"
                           onClick={() => expandQuickview(-1)}
                         >
                           <XMarkIcon className="h-10 w-10 text-white stroke-white hover:text-gray-300 hover:stroke-gray-300" />
@@ -131,7 +140,7 @@ export default function SearchResults() {
                       <h3 className="mb-4 italic">{`By: ${book.author}`}</h3>
                       <p>{book.description}</p>
                     </div>
-                  </div>
+                  </motion.div>
                 ) : null}
               </>
             ))
