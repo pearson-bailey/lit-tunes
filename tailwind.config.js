@@ -15,6 +15,10 @@ module.exports = {
         },
       },
     },
+    fontFamily: {
+      primary: "var(--font-primary)",
+      secondary: "var(--font-secondary)",
+    },
   },
   plugins: [require("@headlessui/tailwindcss")],
 };

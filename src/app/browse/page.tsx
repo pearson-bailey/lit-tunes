@@ -10,6 +10,7 @@ import {
 } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { motion } from "framer-motion";
+import BookCard from "@/src/components/BookCard";
 
 export default function SearchResults() {
   const [genres, setGenres] = useState<Genre[] | null>(null);
@@ -68,9 +69,9 @@ export default function SearchResults() {
 
   return (
     <>
-      <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-start gap-2">
+      <div className="flex-1 flex flex-col w-full px-8 justify-start gap-2">
         <form
-          className="animate-in flex-1 flex-col md:flex-row w-full justify-center items-center gap-3 text-foreground my-6"
+          className="animate-in flex flex-1 flex-col md:flex-row w-full justify-center items-center gap-3 text-foreground my-6"
           onSubmit={handleSubmit}
         >
           <select
@@ -87,7 +88,7 @@ export default function SearchResults() {
                 ))
               : null}
           </select>
-          <button className="bg-green-700 hover:bg-green-600 rounded-md px-4 py-2 text-foreground min-w-fit">
+          <button className="bg-green-700 hover:bg-green-600 rounded-md px-4 py-2 text-foreground">
             Filter Books
           </button>
         </form>
@@ -108,39 +109,12 @@ export default function SearchResults() {
                   />
                 </a>
                 {index == idx ? (
-                  <motion.div
-                    className="lg:flex md:flex lg:col-span-4 md:col-span-3 sm:col-span-2 md:m-8 p-8 border border-white rounded-md"
-                    initial={{ opacity: 0, scaleX: 0 }}
-                    animate={{ opacity: 1, scaleX: 1 }}
-                    transition={{
-                      delay: 0.66,
-                      type: "spring",
-                      bounce: 0.33,
-                    }}
-                  >
-                    <img
-                      className="cursor-pointer lg:w-1/3 md:w-1/2 sm:block hidden"
-                      key={idx}
-                      src={book.book_image}
-                      alt={book.title}
-                    />
-                    <div
-                      className="lg:w-2/3 md:w-1/2 sm:w-full flex flex-col pl-4"
-                      ref={scrollToRef}
-                    >
-                      <div className="relative">
-                        <h1 className="mt-8 md:mt-0">{book.title}</h1>
-                        <button
-                          className="absolute -right-2 -top-2"
-                          onClick={() => expandQuickview(-1)}
-                        >
-                          <XMarkIcon className="h-10 w-10 text-white stroke-white hover:text-gray-300 hover:stroke-gray-300" />
-                        </button>
-                      </div>
-                      <h3 className="mb-4 italic">{`By: ${book.author}`}</h3>
-                      <p>{book.description}</p>
-                    </div>
-                  </motion.div>
+                  <BookCard
+                    idx={idx}
+                    book={book}
+                    ref={scrollToRef}
+                    expandQuickview={expandQuickview}
+                  />
                 ) : null}
               </>
             ))
