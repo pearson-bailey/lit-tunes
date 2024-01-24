@@ -1,5 +1,5 @@
 "use client";
-import { Book, Genre, getBookGenres, searchBooksByGenre } from "./actions";
+import { Book, Genre, getBookGenres, browseBooksByGenre } from "./actions";
 import {
   ChangeEvent,
   FormEvent,
@@ -8,8 +8,6 @@ import {
   useRef,
   useState,
 } from "react";
-import { XMarkIcon } from "@heroicons/react/24/solid";
-import { motion } from "framer-motion";
 import BookCard from "@/src/components/BookCard";
 
 export default function SearchResults() {
@@ -21,7 +19,7 @@ export default function SearchResults() {
 
   const onSearch = useCallback(async () => {
     if (selectedGenre) {
-      const bookResults = await searchBooksByGenre(selectedGenre);
+      const bookResults = await browseBooksByGenre(selectedGenre);
       if (bookResults) {
         setBooks(bookResults);
       }
@@ -33,7 +31,7 @@ export default function SearchResults() {
       const genreResults: Genre[] | null = await getBookGenres();
       if (genreResults) {
         setGenres(genreResults);
-        const initialBooks = await searchBooksByGenre(
+        const initialBooks = await browseBooksByGenre(
           genreResults[0].list_name_encoded
         );
         if (initialBooks.length) {

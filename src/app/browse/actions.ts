@@ -12,47 +12,17 @@ interface FailureResponse {
 export type SearchActionResponse = SuccessResponse | FailureResponse;
 
 export type Genre = {
-  list_name: string;
   display_name: string;
   list_name_encoded: string;
-  oldest_publisehd_date: string;
-  newest_published_date: string;
-  updated: string;
 };
 
 export type Book = {
-  rank: number;
-  rank_last_week: number;
-  weeks_on_list: number;
-  asterisk: number;
-  dagger: number;
   primary_isbn10: string;
   primary_isbn13: string;
-  publisher: string;
   description: string;
-  price: string;
   title: string;
   author: string;
-  contributor: string;
-  contributor_note: string;
   book_image: string;
-  book_image_width: number;
-  book_image_height: number;
-  amazon_product_url: string;
-  age_group: string;
-  book_review_link: string;
-  first_chapter_link: string;
-  sunday_review_link: string;
-  article_chapter_link: string;
-  isbns: {
-    isbn10: string;
-    isbn13: string;
-  }[];
-  buy_links: {
-    name: string;
-    url: string;
-  }[];
-  book_uri: string;
 };
 
 export async function getBookGenres(): Promise<Genre[]> {
@@ -68,7 +38,10 @@ export async function getBookGenres(): Promise<Genre[]> {
 
     if (res.ok) {
       const data = await res.json();
-      return data.results as Genre[];
+      return data.results.map((result: any) => ({
+        display_name: result.display_name,
+        list_name_encoded: result.list_name_encoded,
+      }));
     } else {
       throw new Error(`Failed to fetch genres. Status: ${res.status}`);
     }
@@ -77,7 +50,7 @@ export async function getBookGenres(): Promise<Genre[]> {
   }
 }
 
-export async function searchBooksByGenre(genre: string): Promise<Book[]> {
+export async function browseBooksByGenre(genre: string): Promise<Book[]> {
   try {
     var requestOptions = {
       method: "GET",
@@ -89,7 +62,14 @@ export async function searchBooksByGenre(genre: string): Promise<Book[]> {
 
     if (res.ok) {
       const data = await res.json();
-      return data.results.books as Book[];
+      return data.results.books.map((book: any) => ({
+        primary_isbn10: book.primary_isbn10,
+        primary_isbn13: book.primary_isbn13,
+        description: book.description,
+        title: book.title,
+        author: book.author,
+        book_image: book.book_image,
+      }));
     } else {
       throw new Error(`Failed to fetch genres. Status: ${res.status}`);
     }
