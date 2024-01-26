@@ -1,29 +1,6 @@
 "use server";
 
-interface SuccessResponse {
-  success: true;
-}
-
-interface FailureResponse {
-  message: string;
-  success: false;
-}
-
-export type SearchActionResponse = SuccessResponse | FailureResponse;
-
-export type Genre = {
-  display_name: string;
-  list_name_encoded: string;
-};
-
-export type Book = {
-  primary_isbn10: string;
-  primary_isbn13: string;
-  description: string;
-  title: string;
-  author: string;
-  book_image: string;
-};
+import { Book, Genre } from "@/src/types/client";
 
 export async function getBookGenres(): Promise<Genre[]> {
   try {

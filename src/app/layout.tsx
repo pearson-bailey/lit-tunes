@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="bg-background text-foreground">
         <Header />
-        <main className="min-h-screen flex flex-col items-center">
+        <main className="min-h-[calc(100vh-9.5rem)] flex flex-col items-center">
           {children}
         </main>
         <Footer />

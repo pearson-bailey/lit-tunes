@@ -1,21 +1,19 @@
 "use client";
-import { Book, Genre, getBookGenres, browseBooksByGenre } from "./actions";
+import { getBookGenres, browseBooksByGenre } from "./actions";
 import {
   ChangeEvent,
   FormEvent,
   useCallback,
   useEffect,
-  useRef,
   useState,
 } from "react";
-import BookCard from "@/src/components/BookCard";
+import { Book, Genre } from "@/src/types/client";
+import BooksGrid from "@/src/components/BooksGrid";
 
 export default function SearchResults() {
   const [genres, setGenres] = useState<Genre[] | null>(null);
   const [books, setBooks] = useState<Book[] | null>(null);
-  const [index, setIndex] = useState<number | null>(null);
   const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
-  const scrollToRef = useRef<HTMLDivElement>(null);
 
   const onSearch = useCallback(async () => {
     if (selectedGenre) {
@@ -52,24 +50,11 @@ export default function SearchResults() {
     onSearch();
   };
 
-  const expandQuickview = useCallback((idx: number) => {
-    setIndex(idx);
-    setTimeout(function () {
-      if (scrollToRef.current) {
-        scrollToRef.current.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-          inline: "center",
-        });
-      }
-    }, 200);
-  }, []);
-
   return (
     <>
       <div className="flex-1 flex flex-col w-full px-8 justify-start gap-2">
         <form
-          className="animate-in flex flex-1 flex-col md:flex-row w-full justify-center items-center gap-3 text-foreground my-6"
+          className="animate-in flex flex-1 flex-col md:flex-row w-full justify-center items-start gap-3 text-foreground my-6"
           onSubmit={handleSubmit}
         >
           <select
@@ -91,33 +76,7 @@ export default function SearchResults() {
           </button>
         </form>
       </div>
-      <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-4 grid-flow-row-dense mx-4 items-center">
-        {books
-          ? books.map((book, idx) => (
-              <>
-                <a
-                  onClick={() => expandQuickview(idx)}
-                  className="cursor-pointer"
-                >
-                  <img
-                    className="w-full rounded-lg border border-white"
-                    key={idx}
-                    src={book.book_image}
-                    alt={book.title}
-                  />
-                </a>
-                {index == idx ? (
-                  <BookCard
-                    idx={idx}
-                    book={book}
-                    ref={scrollToRef}
-                    expandQuickview={expandQuickview}
-                  />
-                ) : null}
-              </>
-            ))
-          : null}
-      </div>
+      <BooksGrid books={books} />
     </>
   );
 }

@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
-import { Book } from "../app/browse/actions";
 import { ForwardRefRenderFunction, forwardRef } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
+import { Book } from "../types/client";
 
 interface BookCardProps {
   idx: number;
