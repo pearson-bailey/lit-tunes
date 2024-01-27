@@ -13,7 +13,6 @@ export async function searchBooks(query: string): Promise<Book[]> {
 
     if (res.ok) {
       const data = await res.json();
-      console.log(data);
       return data.items.map((item: any) => {
         const newItem = {
           primary_isbn10: "",
@@ -34,7 +33,7 @@ export async function searchBooks(query: string): Promise<Book[]> {
               : "";
           newItem.book_image =
             item.volumeInfo.imageLinks && item.volumeInfo.imageLinks.thumbnail
-              ? item.volumeInfo.imageLinks.thumbnail
+              ? (item.volumeInfo.imageLinks.thumbnail += "&fife=w800")
               : "";
 
           // Extract ISBNs
@@ -56,9 +55,9 @@ export async function searchBooks(query: string): Promise<Book[]> {
         return newItem;
       });
     } else {
-      throw new Error(`Failed to fetch genres. Status: ${res.status}`);
+      throw new Error(`Failed to fetch books. Status: ${res.status}`);
     }
   } catch (error) {
-    throw new Error(`Failed to fetch genres. Error: ${error}`);
+    throw new Error(`Failed to fetch books. Error: ${error}`);
   }
 }

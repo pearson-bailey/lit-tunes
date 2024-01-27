@@ -3,7 +3,6 @@ import Link from "next/link";
 import { ForwardRefRenderFunction, MouseEventHandler, forwardRef } from "react";
 import {
   ArrowRightStartOnRectangleIcon,
-  ArrowTrendingUpIcon,
   BookOpenIcon,
   BuildingLibraryIcon,
   ChatBubbleBottomCenterTextIcon,
@@ -42,38 +41,38 @@ const SlideNavRender: ForwardRefRenderFunction<
       <div
         className={`SlideNav__body ${
           showNav ? "slide-in" : ""
-        } flex basis-4/5 flex-col justify-around items-center opacity-0 my-8 text-2xl`}
+        } flex basis-4/5 flex-col justify-around items-start opacity-0 my-8 ml-8 text-2xl`}
       >
         <>
           <Link
             href="/account"
             onClick={toggleNav}
             className={
-              "flex justify-center items-center gap-2 w-11/12 py-1.5 rounded-md uppercase bg-primary-800"
+              "flex justify-start items-center gap-2 w-11/12 py-1.5 rounded-md uppercase bg-primary-800"
             }
           >
-            <UserIcon className="h-7 w-7 rounded-full p-0.5" />
             Account
+            <UserIcon className="h-7 w-7 rounded-full p-0.5" />
           </Link>
           <Link
             href="/browse"
             onClick={toggleNav}
             className={
-              "flex justify-center items-center gap-2 w-11/12 py-1.5 rounded-md uppercase bg-primary-800"
+              "flex justify-start items-center gap-2 w-11/12 py-1.5 rounded-md uppercase bg-primary-800"
             }
           >
-            <BuildingLibraryIcon className="h-7 w-7 rounded-full p-0.5" />
             Browse
+            <BuildingLibraryIcon className="h-7 w-7 rounded-full p-0.5" />
           </Link>
           <Link
             href="/collections"
             onClick={toggleNav}
             className={
-              "flex justify-center items-center gap-2 w-11/12 py-1.5 rounded-md uppercase bg-primary-800"
+              "flex justify-start items-center gap-2 w-11/12 py-1.5 rounded-md uppercase bg-primary-800"
             }
           >
-            <BookOpenIcon className="h-7 w-7 rounded-full p-0.5" />
             Collections
+            <BookOpenIcon className="h-7 w-7 rounded-full p-0.5" />
           </Link>
           <form
             action="/logout"
@@ -83,11 +82,11 @@ const SlideNavRender: ForwardRefRenderFunction<
             <button
               onClick={toggleNav}
               className={
-                "flex justify-center items-center gap-2 py-1.5 rounded-md uppercase"
+                "flex justify-start items-center gap-2 py-1.5 rounded-md uppercase"
               }
             >
-              <ArrowRightStartOnRectangleIcon className="h-6 w-6 text-secondary-500 stroke-current" />
               Log Out
+              <ArrowRightStartOnRectangleIcon className="h-6 w-6 text-secondary-500 stroke-current" />
             </button>
           </form>
         </>
