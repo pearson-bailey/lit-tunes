@@ -26,7 +26,7 @@ const BookCardRender: ForwardRefRenderFunction<
 
   return (
     <motion.div
-      className="md:flex justify-around lg:col-span-4 md:col-span-3 col-span-2 p-8 lg:px-24 lg:py-16 border border-foreground rounded-md"
+      className="md:flex justify-around lg:col-span-4 md:col-span-3 col-span-2 p-8 lg:px-24 lg:py-16 border border-foreground rounded-md mt-3 relative"
       initial={{ opacity: 0, scaleX: 0 }}
       animate={{ opacity: 1, scaleX: 1 }}
       transition={{
@@ -35,10 +35,10 @@ const BookCardRender: ForwardRefRenderFunction<
         bounce: 0.33,
       }}
     >
-      <div className="flex lg:w-1/3 md:w-1/2">
+      <div className="flex lg:w-1/4 md:w-1/3">
       {book.book_image.length ? (
         <img
-          className="md:flex cursor-pointer rounded-md border border-foreground h-fit hidden"
+          className="md:flex cursor-pointer rounded-md border border-foreground w-full h-fit hidden"
           key={idx}
           src={book.book_image}
           alt={book.title}
@@ -50,7 +50,7 @@ const BookCardRender: ForwardRefRenderFunction<
       )}
       </div>
       <div
-        className="lg:w-2/3 md:w-1/2 sm:w-full flex flex-col lg:pl-8"
+        className="lg:w-3/4 md:w-2/3 sm:w-full flex flex-col md:pl-4 lg:pl-8"
         ref={ref}
       >
         <div className="relative">
@@ -72,7 +72,7 @@ const BookCardRender: ForwardRefRenderFunction<
           {book.description.length > 250 && (
             <button
               onClick={toggleDescription}
-              className="ml-2 text-yellow-300 hover:font-semibold rounded-lg bg-foreground text-sm px-2 py-0.5"
+              className="ml-2 text-gray-500 dark:text-yellow-300 hover:font-semibold text-sm px-2 py-0.5"
             >
               {isFullDescriptionShown ? "Show less" : "Show more"}
             </button>
