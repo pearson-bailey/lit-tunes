@@ -102,7 +102,7 @@ const SlideNavRender: ForwardRefRenderFunction<
             "flex items-center justify-center flex-1 py-1.5 rounded-md uppercase text-center cursor-pointer gap-1"
           }
         >
-          <PhoneIcon className="h-6 w-6 stroke-white" />
+          <PhoneIcon className="h-6 w-6 stroke-yellow-400" />
           Contact Us
         </a>
         <Link

@@ -7,7 +7,7 @@ export async function searchBooks(query: string): Promise<Book[]> {
       method: "GET",
     };
     const res = await fetch(
-      `https://www.googleapis.com/books/v1/volumes?q=${query}`,
+      `https://www.googleapis.com/books/v1/volumes?q=${query}&maxResults=40`,
       requestOptions
     );
 
@@ -33,7 +33,7 @@ export async function searchBooks(query: string): Promise<Book[]> {
               : "";
           newItem.book_image =
             item.volumeInfo.imageLinks && item.volumeInfo.imageLinks.thumbnail
-              ? (item.volumeInfo.imageLinks.thumbnail += "&fife=w800")
+              ? (item.volumeInfo.imageLinks.thumbnail += "&fife=w500")
               : "";
 
           // Extract ISBNs

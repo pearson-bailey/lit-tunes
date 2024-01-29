@@ -4,7 +4,6 @@ import {
   ForwardRefRenderFunction,
   forwardRef,
   useCallback,
-  useMemo,
   useState,
 } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
@@ -23,11 +22,11 @@ const BookCardRender: ForwardRefRenderFunction<
 
   const toggleDescription = useCallback(() => {
     setIsFullDescriptionShown(!isFullDescriptionShown);
-  }, []);
+  }, [isFullDescriptionShown]);
 
   return (
     <motion.div
-      className="md:flex lg:col-span-4 md:col-span-3 sm:col-span-2 md:m-8 p-8 border border-white rounded-md h-full"
+      className="md:flex w-full justify-around lg:col-span-4 md:col-span-3 col-span-2 p-8 lg:px-24 lg:py-16 border border-foreground rounded-md h-full"
       initial={{ opacity: 0, scaleX: 0 }}
       animate={{ opacity: 1, scaleX: 1 }}
       transition={{
@@ -38,13 +37,13 @@ const BookCardRender: ForwardRefRenderFunction<
     >
       {book.book_image.length ? (
         <img
-          className="cursor-pointer lg:w-1/3 md:w-1/2 sm:block hidden"
+          className="cursor-pointer lg:w-1/4 md:w-1/3 sm:block rounded-md border border-foreground hidden"
           key={idx}
           src={book.book_image}
           alt={book.title}
         />
       ) : (
-        <div className="hidden md:flex flex-col justify-center cursor-pointer lg:w-1/3 md:w-1/2 bg-black text-white text-4xl px-8">
+        <div className="hidden md:flex flex-col justify-center cursor-pointer lg:w-1/4 md:w-1/3 bg-background aspect-[2/3] text-foreground text-4xl px-8">
           {book.title.slice(0, 49)}
         </div>
       )}
@@ -58,7 +57,7 @@ const BookCardRender: ForwardRefRenderFunction<
             className="absolute -right-2 -top-2"
             onClick={() => expandQuickview(-1)}
           >
-            <XMarkIcon className="h-10 w-10 lg:h-14 lg:w-14 text-white stroke-white hover:text-gray-300 hover:stroke-gray-300" />
+            <XMarkIcon className="h-10 w-10 lg:h-14 lg:w-14 text-foreground stroke-foreground hover:text-gray-300 hover:stroke-gray-300" />
           </button>
         </div>
         <h3 className="mb-4 italic lg:mt-3 lg:text-3xl">{`By: ${book.author}`}</h3>
@@ -71,7 +70,7 @@ const BookCardRender: ForwardRefRenderFunction<
           {book.description.length > 250 && (
             <button
               onClick={toggleDescription}
-              className="ml-2 text-yellow-300 hover:font-semibold"
+              className="ml-2 text-yellow-300 hover:font-semibold rounded-lg bg-foreground text-sm px-2 py-0.5"
             >
               {isFullDescriptionShown ? "Show less" : "Show more"}
             </button>
