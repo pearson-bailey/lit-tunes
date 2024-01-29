@@ -40,7 +40,7 @@ const SearchBarRender: ForwardRefRenderFunction<
   return (
     <AnimatePresence>
     { showSearch ? (<motion.div
-      className="flex w-full justify-center p-8 bg-foreground text-background absolute z-10"
+      className="flex w-full justify-center bg-white text-background absolute z-10"
       ref={ref}
       initial={{ opacity: 0, translateY: -100 }}
       animate={{ opacity: 1, translateY: 0 }}
@@ -52,12 +52,12 @@ const SearchBarRender: ForwardRefRenderFunction<
       }}
     >
         <form
-            className="animate-in flex flex-1 w-full justify-center items-center gap-3 text-foreground my-2"
+            className="animate-in flex flex-1 w-full justify-center bg-black/10 dark:bg-black/80 items-center gap-3 text-foreground p-8"
             onSubmit={handleSubmit}
             >
-                <label className="text-background" htmlFor="search">Search:</label>
+                <label htmlFor="search">Search:</label>
                 <input
-                    className="rounded-md pl-2 py-1 bg-background border"
+                    className="rounded-md pl-2 py-1 border border-black/50"
                     type="text"
                     name="search"
                     placeholder={"Title, author, etc"}
@@ -65,7 +65,7 @@ const SearchBarRender: ForwardRefRenderFunction<
                 />
                 <button
                     type="submit"
-                    className="bg-green-700 hover:bg-green-600 rounded-md px-4 py-1 text-foreground"
+                    className="bg-green-700 hover:bg-green-600 rounded-md px-4 py-1 text-white"
                 >
                     Submit
                 </button>

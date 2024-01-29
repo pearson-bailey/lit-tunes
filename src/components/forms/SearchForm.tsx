@@ -1,40 +1,32 @@
 "use client";
-import { ChangeEvent, FormEvent, useCallback, useEffect, useState } from "react";
+import { FormEvent, useCallback, useEffect, useState } from "react";
 import { searchBooks } from "./actions";
 import BooksGrid from "../BooksGrid";
 import { Book } from "@/src/types/client";
 
 export default function SearchForm({ queryParam }: {queryParam?: string}) {
     const [books, setBooks] = useState<Book[] | null>(null);
-    const [query, setQuery] = useState<string | null>(null);
 
-    const onSearch = useCallback(async () => {
-      if (query) {
-        const bookResults = await searchBooks(query);
+    const onSearch = useCallback(async (searchQuery: string) => {
+      if (searchQuery) {
+        const bookResults = await searchBooks(searchQuery);
         if (bookResults) {
           setBooks(bookResults);
         }
       }
-    }, [query, searchBooks, setBooks]);
+    }, []);
 
     useEffect(() => {
         if (queryParam) {
-            setQuery(queryParam);
+          onSearch(queryParam);
         }
-        onSearch();
     }, [queryParam, onSearch]);
-  
-    const handleQueryChange = useCallback(
-      (event: ChangeEvent<HTMLInputElement>) => {
-        setQuery(event.target.value);
-      },
-      [setQuery]
-    );
   
     const handleSubmit = useCallback(
       async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        await onSearch();
+        const searchInput = event.currentTarget.elements.namedItem('search') as HTMLInputElement;
+        if (searchInput && searchInput.value) {await onSearch(searchInput.value);}
       },
       [onSearch]
     );
@@ -51,8 +43,7 @@ export default function SearchForm({ queryParam }: {queryParam?: string}) {
                     className="rounded-md pl-2 py-1 bg-inherit border"
                     type="text"
                     name="search"
-                    placeholder={"Title, author, etc"}
-                    onChange={(e) => handleQueryChange(e)}
+                    placeholder={queryParam || "Title, author, etc"}
                 />
                 <button
                     type="submit"

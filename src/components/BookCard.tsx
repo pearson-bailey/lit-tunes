@@ -26,7 +26,7 @@ const BookCardRender: ForwardRefRenderFunction<
 
   return (
     <motion.div
-      className="md:flex w-full justify-around lg:col-span-4 md:col-span-3 col-span-2 p-8 lg:px-24 lg:py-16 border border-foreground rounded-md h-full"
+      className="md:flex justify-around lg:col-span-4 md:col-span-3 col-span-2 p-8 lg:px-24 lg:py-16 border border-foreground rounded-md"
       initial={{ opacity: 0, scaleX: 0 }}
       animate={{ opacity: 1, scaleX: 1 }}
       transition={{
@@ -35,18 +35,20 @@ const BookCardRender: ForwardRefRenderFunction<
         bounce: 0.33,
       }}
     >
+      <div className="flex lg:w-1/3 md:w-1/2">
       {book.book_image.length ? (
         <img
-          className="cursor-pointer lg:w-1/4 md:w-1/3 sm:block rounded-md border border-foreground hidden"
+          className="md:flex cursor-pointer rounded-md border border-foreground h-fit hidden"
           key={idx}
           src={book.book_image}
           alt={book.title}
         />
       ) : (
-        <div className="hidden md:flex flex-col justify-center cursor-pointer lg:w-1/4 md:w-1/3 bg-background aspect-[2/3] text-foreground text-4xl px-8">
+        <div className="md:flex flex-col justify-center bg-background border border-foreground rounded-md w-full aspect-[2/3] text-foreground text-center text-4xl px-8 hidden">
           {book.title.slice(0, 49)}
         </div>
       )}
+      </div>
       <div
         className="lg:w-2/3 md:w-1/2 sm:w-full flex flex-col lg:pl-8"
         ref={ref}

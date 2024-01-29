@@ -38,7 +38,7 @@ export default function BooksGrid({ books }: { books: Book[] | null }) {
                     alt={book.title}
                   />
                 ) : (
-                  <div className="flex flex-col justify-center w-full aspect-[2/3] rounded-lg border border-foreground bg-background text-foreground text-2xl px-8">
+                  <div className="flex flex-col justify-center w-full aspect-[2/3] rounded-lg border border-foreground bg-background text-foreground break-words text-2xl px-8">
                     {book.title.slice(0, 49)}
                   </div>
                 )}

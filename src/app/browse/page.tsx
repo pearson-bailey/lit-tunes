@@ -52,13 +52,13 @@ export default function SearchResults() {
 
   return (
     <>
-      <div className="flex-1 flex flex-col w-full px-8 justify-start gap-2">
+      <div className="flex-1 flex flex-col w-full justify-start gap-2 text-xs md:text-base">
         <form
-          className="animate-in flex flex-1 flex-col md:flex-row w-full justify-center items-start gap-3 text-foreground my-6"
+          className="animate-in flex flex-1 w-full justify-center items-start gap-1 my-6"
           onSubmit={handleSubmit}
         >
           <select
-            className="rounded-md py-2 bg-inherit border"
+            className="rounded-md py-1 bg-background text-foreground border"
             name="genre"
             placeholder={genres ? genres[0].display_name : "Choose a genre"}
             onChange={handleGenreChange}
@@ -71,7 +71,7 @@ export default function SearchResults() {
                 ))
               : null}
           </select>
-          <button className="bg-green-700 hover:bg-green-600 rounded-md px-4 py-2 text-foreground">
+          <button className="bg-green-700 hover:bg-green-600 rounded-md px-2 py-1 text-white">
             Filter Books
           </button>
         </form>
