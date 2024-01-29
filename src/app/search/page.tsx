@@ -8,7 +8,7 @@ export default function SearchResults({
 
   return (
     <>
-      <div className="flex flex-col w-[calc(100vw-1rem)] items-start px-8 justify-start gap-2">
+      <div className="flex flex-col w-[calc(100vw-1rem)] items-center justify-start gap-2">
         <SearchForm queryParam={searchParams.query} />
       </div>
       
