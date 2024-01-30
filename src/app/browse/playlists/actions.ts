@@ -5,7 +5,7 @@ import { Book, Playlist } from "@/src/types/client";
 export async function getPlaylistGenres(): Promise<string[]> {
   try {
     var myHeaders = new Headers();
-myHeaders.append("Authorization", `Bearer ${process.env.NEXT_PUBLIC_SPOTIFY_ACCESS_TOKEN}`);
+myHeaders.append("Authorization", `Bearer ${process.env.SPOTIFY_ACCESS_TOKEN}`);
 
 var requestOptions: RequestInit = {
   method: 'GET',
@@ -29,7 +29,7 @@ const res: Response = await fetch("https://api.spotify.com/v1/recommendations/av
 export async function browsePlaylistsByGenre(genre: string): Promise<Playlist[]> {
   try {
     var myHeaders = new Headers();
-      myHeaders.append("Authorization", `Bearer ${process.env.NEXT_PUBLIC_SPOTIFY_ACCESS_TOKEN}`);
+      myHeaders.append("Authorization", `Bearer ${process.env.SPOTIFY_ACCESS_TOKEN}`);
 
     var requestOptions: RequestInit = {
       method: 'GET',

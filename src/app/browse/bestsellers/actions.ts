@@ -9,7 +9,7 @@ export async function getBookGenres(): Promise<Genre[]> {
     };
 
     const res = await fetch(
-      `https://api.nytimes.com/svc/books/v3/lists/names.json?api-key=${process.env.NEXT_PUBLIC_NYT_API_KEY}`,
+      `https://api.nytimes.com/svc/books/v3/lists/names.json?api-key=${process.env.NYT_API_KEY}`,
       requestOptions
     );
 
@@ -33,7 +33,7 @@ export async function browseBooksByGenre(genre: string): Promise<Book[]> {
       method: "GET",
     };
     const res = await fetch(
-      `https://api.nytimes.com/svc/books/v3/lists/current/${genre}.json?api-key=${process.env.NEXT_PUBLIC_NYT_API_KEY}`,
+      `https://api.nytimes.com/svc/books/v3/lists/current/${genre}.json?api-key=${process.env.NYT_API_KEY}`,
       requestOptions
     );
 
