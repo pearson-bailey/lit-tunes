@@ -1,11 +1,13 @@
 "use client";
 import Link from "next/link";
+import { Disclosure } from '@headlessui/react'
 import { ForwardRefRenderFunction, MouseEventHandler, forwardRef } from "react";
 import {
   ArrowRightStartOnRectangleIcon,
   BookOpenIcon,
   BuildingLibraryIcon,
   ChatBubbleBottomCenterTextIcon,
+  ChevronDownIcon,
   PhoneIcon,
   UserIcon,
   XMarkIcon,
@@ -55,16 +57,42 @@ const SlideNavRender: ForwardRefRenderFunction<
               Account
               <UserIcon className="h-7 w-7 rounded-full p-0.5" />
             </Link>
-            <Link
-              href="/browse"
-              onClick={toggleNav}
-              className={
-                "flex justify-start items-center gap-2 w-11/12 py-1.5 rounded-md uppercase bg-primary-800"
-              }
-            >
-              Browse
-              <BuildingLibraryIcon className="h-7 w-7 rounded-full p-0.5" />
-            </Link>
+            <Disclosure>
+              {({ open }) => (
+                <>
+                <Disclosure.Button className={
+                      "flex justify-start items-center gap-2 w-11/12 py-1.5 rounded-md uppercase bg-primary-800"
+                    }>
+                  <div className="flex flex-1 gap-2">
+                    Browse
+                    <BuildingLibraryIcon className="h-7 w-7 rounded-full p-0.5" />
+                  </div>
+                  <ChevronDownIcon className={`${open ? 'rotate-180 transform' : ''} h-7 w-7`} />
+                </Disclosure.Button>
+                <Disclosure.Panel className="flex flex-col gap-2 ml-4">
+                  <Link
+                    href="/browse/bestsellers"
+                    onClick={toggleNav}
+                    className={
+                      "flex justify-start items-center gap-2 w-11/12 py-1.5 rounded-md uppercase bg-primary-800"
+                    }
+                  >
+                    Bestsellers
+                  </Link>
+                  <Link
+                    href="/browse/playlists"
+                    onClick={toggleNav}
+                    className={
+                      "flex justify-start items-center gap-2 w-11/12 py-1.5 rounded-md uppercase bg-primary-800"
+                    }
+                  >
+                    Playlists
+                    
+                  </Link>
+                </Disclosure.Panel>
+              </>
+              )}
+            </Disclosure>
             <Link
               href="/collections"
               onClick={toggleNav}
