@@ -1,7 +1,6 @@
 'use client';
 import { useCallback, useRef, useState } from "react";
 import { Playlist } from "../types/client";
-import BookCard from "./BookCard";
 import { motion } from "framer-motion";
 import PlaylistCard from "./PlaylistCard";
 
@@ -32,7 +31,7 @@ export default function PlaylistsGrid({ playlists }: { playlists: Playlist[] | n
                 onClick={() => expandQuickview(idx)}
                 className="flex flex-col flex-1 cursor-pointer h-full justify-center text-center relative"
               >
-                {playlist.images[0].url.length ? (
+                {playlist.images[0]?.url.length ? (
                   <>
                   <img
                     className="w-full rounded-lg border border-foreground"
