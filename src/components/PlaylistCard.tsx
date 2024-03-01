@@ -32,15 +32,18 @@ const PlaylistCardRender: ForwardRefRenderFunction<
   const [selectedTrack, setSelectedTrack] = useState<Track | null>(null);
   const [playing, setPlaying] = useState(false);
 
-  const getTracks = useCallback(async (id: string) => {
-    const items = await getTracksFromPlaylist(id);
-    setTracks(items);
-  }, []);
-
   useEffect(() => {
-    if (playlist.id) {
-      getTracks(playlist.id);
-    }
+    const fetchTracksAndSelectFirst = async () => {
+      if (playlist.id) {
+        const items = await getTracksFromPlaylist(playlist.id);
+        setTracks(items);
+        if (items && items.length > 0) {
+          setSelectedTrack(items[0].track);
+        }
+      }
+    };
+
+    fetchTracksAndSelectFirst();
   }, [playlist.id]);
 
   const handleSelectTrack = useCallback((track: Track) => {
@@ -100,7 +103,7 @@ const PlaylistCardRender: ForwardRefRenderFunction<
         <p className="text-justify lg:text-xl lg:mr-8 text-yellow-300 mb-2">
           {playlist.description}
         </p>
-        <div className="flex w-1/2 gap-1 my-2 py-2 px-2 items-center bg-foreground/10 rounded-md">
+        <div className="flex w-full lg:w-1/2 gap-1 my-2 py-2 px-2 items-center bg-foreground/10 rounded-md">
           <button
             className="flex rounded-full"
             onClick={() => handlePlay(selectedTrack?.id ?? "")}
@@ -114,7 +117,7 @@ const PlaylistCardRender: ForwardRefRenderFunction<
           <p className="text-yellow-300">{`${selectedTrack?.artists[0].name}  -  `}</p>
           <p className="text-yellow-300">{selectedTrack?.name}</p>
         </div>
-        <ul className="flex flex-col w-1/2 gap-2 max-h-96 overflow-y-scroll">
+        <ul className="flex flex-col w-full lg:w-1/2 gap-2 max-h-96 overflow-y-scroll">
           {tracks
             ? tracks.map((track, idx) => {
                 return (
