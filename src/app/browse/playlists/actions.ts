@@ -1,6 +1,6 @@
 "use server";
 
-import { spotifyApi } from "@/src/utils/spotify/spotifyClient";
+import { spotifyApi } from "@/utils/spotify/spotifyClient";
 import {
   ItemTypes,
   PlaylistedTrack,

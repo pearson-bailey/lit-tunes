@@ -5,6 +5,7 @@ import {
   forwardRef,
   useCallback,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import {
@@ -18,6 +19,7 @@ import {
   Track,
 } from "@spotify/web-api-ts-sdk";
 import { getTracksFromPlaylist } from "../app/browse/playlists/actions";
+import { secondsToMinutesAndSeconds } from "@/utils/client/number";
 
 interface PlaylistCardProps {
   idx: number;
@@ -28,38 +30,78 @@ const PlaylistCardRender: ForwardRefRenderFunction<
   HTMLDivElement,
   PlaylistCardProps
 > = ({ idx, playlist, expandQuickview }, ref) => {
+  const rangeRef = useRef<HTMLInputElement>(null);
   const [tracks, setTracks] = useState<PlaylistedTrack<Track>[] | null>(null);
   const [selectedTrack, setSelectedTrack] = useState<Track | null>(null);
-  const [playing, setPlaying] = useState(false);
+  const [playing, setPlaying] = useState<boolean>(false);
+  const [selectedPlayer, setSelectedPlayer] = useState<HTMLAudioElement | null>(
+    null
+  );
+
+  const handleSelectTrack = useCallback(
+    (track: Track) => {
+      if (track) {
+        selectedPlayer?.pause();
+        setSelectedTrack(track);
+        const audioPlayer = document.getElementById(
+          track.id
+        ) as HTMLAudioElement;
+        setSelectedPlayer(audioPlayer);
+      }
+    },
+    [selectedPlayer, setSelectedPlayer, setSelectedTrack]
+  );
 
   useEffect(() => {
     const fetchTracksAndSelectFirst = async () => {
       if (playlist.id) {
         const items = await getTracksFromPlaylist(playlist.id);
-        setTracks(items);
-        if (items && items.length > 0) {
-          setSelectedTrack(items[0].track);
+        const filteredItems = items.filter((item) => item.track.preview_url);
+        if (filteredItems.length) {
+          setTracks(filteredItems);
+          handleSelectTrack(filteredItems[0].track);
         }
       }
     };
 
     fetchTracksAndSelectFirst();
-  }, [playlist.id]);
-
-  const handleSelectTrack = useCallback((track: Track) => {
-    setSelectedTrack(track);
   }, []);
 
-  const handlePlay = useCallback(
-    (id: string) => {
-      if (id) {
-        const audioPlayer = document.getElementById(id) as HTMLAudioElement;
-        audioPlayer.volume = 0.75;
-        playing ? audioPlayer.pause() : audioPlayer.play();
-        setPlaying((prev) => !prev);
+  const handlePlay = useCallback(() => {
+    playing ? selectedPlayer?.pause() : selectedPlayer?.play();
+  }, [playing, selectedPlayer, setPlaying]);
+
+  useEffect(() => {
+    if (selectedPlayer) {
+      selectedPlayer.volume = 0.75;
+      selectedPlayer.onplay = () => setPlaying(true);
+      selectedPlayer.onpause = () => setPlaying(false);
+      selectedPlayer.onended = () => {
+        selectedPlayer.currentTime = 0;
+        setPlaying(false);
+      };
+    }
+  }, [selectedPlayer]);
+
+  const audioTimeUpdate = useCallback(() => {
+    const audioPlayer = selectedPlayer;
+    if (audioPlayer) {
+      const currentTime = audioPlayer.currentTime;
+      const duration = audioPlayer.duration;
+      if (rangeRef.current) {
+        rangeRef.current.value = currentTime.toString();
+        rangeRef.current.max = duration.toString();
+      }
+    }
+  }, [rangeRef, selectedPlayer]);
+
+  const handleTimeChange = useCallback(
+    (value: string) => {
+      if (value && selectedPlayer && rangeRef.current) {
+        selectedPlayer.currentTime = parseFloat(rangeRef.current.value);
       }
     },
-    [playing]
+    [selectedPlayer]
   );
 
   return (
@@ -103,40 +145,64 @@ const PlaylistCardRender: ForwardRefRenderFunction<
         <p className="text-justify lg:text-xl lg:mr-8 text-yellow-300 mb-2">
           {playlist.description}
         </p>
-        <div className="flex w-full lg:w-1/2 gap-1 my-2 py-2 px-2 items-center bg-foreground/10 rounded-md">
-          <button
-            className="flex rounded-full"
-            onClick={() => handlePlay(selectedTrack?.id ?? "")}
-          >
-            {playing ? (
-              <PauseCircleIcon className="w-8 h-8" />
-            ) : (
-              <PlayCircleIcon className="w-8 h-8" />
-            )}
-          </button>
-          <p className="text-yellow-300">{`${selectedTrack?.artists[0].name}  -  `}</p>
-          <p className="text-yellow-300">{selectedTrack?.name}</p>
+        <div className="flex flex-col w-full lg:w-1/2 gap-1 my-2 py-2 px-2 items-center bg-foreground/10 rounded-md">
+          <div className="flex flex-row w-full items-center gap-1">
+            <button className="flex rounded-full" onClick={() => handlePlay()}>
+              {playing ? (
+                <PauseCircleIcon className="w-8 h-8" />
+              ) : (
+                <PlayCircleIcon className="w-8 h-8" />
+              )}
+            </button>
+            <p className="">{`${selectedTrack?.artists[0].name}  -  `}</p>
+            <p className="">{selectedTrack?.name}</p>
+          </div>
+          <div className="flex flex-col w-full px-4">
+            <div className="flex flex-row w-full">
+              <input
+                ref={rangeRef}
+                type="range"
+                min="0"
+                max={selectedPlayer?.duration ?? 0}
+                value={selectedPlayer?.currentTime ?? 0}
+                className="w-full accent-yellow-400"
+                onChange={(e) => handleTimeChange(e.target.value)}
+              />
+            </div>
+            <div className="flex flex-row w-full items-start justify-between">
+              <span className="text-xs">0:00</span>
+              <span className="text-xs">
+                {secondsToMinutesAndSeconds(selectedPlayer?.duration ?? 0)}
+              </span>
+            </div>
+          </div>
         </div>
-        <ul className="flex flex-col w-full lg:w-1/2 gap-2 max-h-96 overflow-y-scroll">
+        <ul className="flex flex-col w-full lg:w-1/2 max-h-96 overflow-y-scroll border border-foreground rounded-md">
           {tracks
             ? tracks.map((track, idx) => {
-                return (
-                  <div key={idx} className="w-full hover:bg-foreground/10">
+                return track.track.preview_url ? (
+                  <div
+                    key={idx}
+                    className={`w-full hover:bg-foreground/10 ${selectedTrack?.id == track.track.id ? "bg-foreground/20" : null}`}
+                  >
                     <button
-                      className="flex w-full gap-1"
+                      className="flex w-full gap-1 pl-3 py-0.5"
                       onClick={() => handleSelectTrack(track.track)}
                     >
                       <p>{`${track.track.artists[0].name}  -  `}</p>
                       <p>{track.track.name}</p>
                     </button>
-                    <audio id={track.track.id}>
+                    <audio
+                      id={track.track.id}
+                      onTimeUpdate={() => audioTimeUpdate()}
+                    >
                       <source
                         src={track.track.preview_url ?? ""}
                         type="audio/mpeg"
                       />
                     </audio>
                   </div>
-                );
+                ) : null;
               })
             : null}
         </ul>
