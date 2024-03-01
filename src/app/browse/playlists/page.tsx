@@ -6,13 +6,13 @@ import {
   useEffect,
   useState,
 } from "react";
-import { Playlist } from "@/src/types/client";
 import { browsePlaylistsByGenre, getPlaylistGenres } from "./actions";
 import PlaylistsGrid from "@/src/components/PlaylistsGrid";
+import { Category, SimplifiedPlaylist } from "@spotify/web-api-ts-sdk";
 
 export default function SearchResults() {
   const [genres, setGenres] = useState<string[] | null>(null);
-  const [playlists, setPlaylists] = useState<Playlist[] | null>(null);
+  const [playlists, setPlaylists] = useState<SimplifiedPlaylist[] | null>(null);
   const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
 
   const onSearch = useCallback(async () => {

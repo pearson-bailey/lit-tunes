@@ -1,10 +1,10 @@
 'use client';
 import { useCallback, useRef, useState } from "react";
-import { Playlist } from "../types/client";
 import { motion } from "framer-motion";
 import PlaylistCard from "./PlaylistCard";
+import { SimplifiedPlaylist } from "@spotify/web-api-ts-sdk";
 
-export default function PlaylistsGrid({ playlists }: { playlists: Playlist[] | null }) {
+export default function PlaylistsGrid({ playlists }: { playlists: SimplifiedPlaylist[] | null }) {
   const [index, setIndex] = useState<number | null>(null);
   const scrollToRef = useRef<HTMLDivElement>(null);
 
@@ -34,7 +34,7 @@ export default function PlaylistsGrid({ playlists }: { playlists: Playlist[] | n
                 {playlist.images[0]?.url.length ? (
                   <>
                   <img
-                    className="w-full rounded-lg border border-foreground"
+                    className="w-full border border-foreground"
                     key={idx}
                     src={playlist.images[0].url}
                     alt={playlist.name}

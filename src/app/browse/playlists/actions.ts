@@ -1,71 +1,71 @@
 "use server";
 
-import { Playlist } from "@/src/types/client";
-import getAccessToken from "@/src/utils/spotify/getAccessToken";
-
-export async function getPlaylistGenres(): Promise<string[]> {
-  try {
-    var myHeaders = new Headers();
-    const accessToken = await getAccessToken();
-    myHeaders.append("Authorization", `Bearer ${accessToken}`);
-
-    var requestOptions: RequestInit = {
-      method: "GET",
-      headers: myHeaders,
-    };
-
-    const res: Response = await fetch(
-      "https://api.spotify.com/v1/recommendations/available-genre-seeds",
-      requestOptions
-    );
-
-    if (res.ok) {
-      const data = await res.json();
-      return data.genres;
-    } else {
-      throw new Error(`Failed to fetch playlist genres. Status: ${res.status}`);
-    }
-  } catch (error) {
-    throw new Error(`Failed to fetch playlist genres. Error: ${error}`);
-  }
-}
+import { spotifyApi } from "@/src/utils/spotify/spotifyClient";
+import {
+  ItemTypes,
+  PlaylistedTrack,
+  SimplifiedPlaylist,
+  Track,
+} from "@spotify/web-api-ts-sdk";
+import { cookies } from "next/headers";
 
 export async function browsePlaylistsByGenre(
   genre: string
-): Promise<Playlist[]> {
+): Promise<SimplifiedPlaylist[]> {
+  const types: readonly ItemTypes[] = ["playlist"];
   try {
-    var myHeaders = new Headers();
-    const accessToken = await getAccessToken();
-    myHeaders.append("Authorization", `Bearer ${accessToken}`);
+    await clearAccessTokenCookie();
+    const res = await spotifyApi.search(genre, types);
 
-    var requestOptions: RequestInit = {
-      method: "GET",
-      headers: myHeaders,
-      redirect: "follow",
-    };
-
-    const res = await fetch(
-      `https://api.spotify.com/v1/search?q=${genre}&type=playlist&limit=40&offset=0`,
-      requestOptions
-    );
-
-    if (res.ok) {
-      const data = await res.json();
-      const mappedData: Playlist[] = data.playlists.items.map(
-        (playlist: any) => ({
-          name: playlist.name,
-          description: playlist.description,
-          href: playlist.href,
-          images: playlist.images,
-          primary_color: playlist.primary_color,
-          tracks: playlist.tracks,
-        })
-      );
-      return mappedData;
+    if (res.playlists?.items) {
+      return res.playlists?.items as SimplifiedPlaylist[];
     } else {
-      throw new Error(`Failed to fetch genres. Status: ${res.status}`);
+      throw new Error(`Failed to fetch playlists by genre.`);
     }
   } catch (error) {
-    throw new Error(`Failed to fetch genres. Error: ${error}`);
+    const e = error as Error;
+    throw new Error(`Failed to fetch playlists by genre. Error: ${e.message}`);
   }
+}
+
+export async function getPlaylistGenres(): Promise<string[]> {
+  try {
+    await clearAccessTokenCookie();
+    const res = await spotifyApi.recommendations.genreSeeds();
+
+    if (res) {
+      return res.genres;
+    } else {
+      throw new Error("Failed to fetch playlist genres");
+    }
+  } catch (error) {
+    const e = error as Error;
+    throw new Error(`Failed to fetch playlist genres. Error: ${e.message}`);
+  }
+}
+
+export async function getTracksFromPlaylist(
+  id: string
+): Promise<PlaylistedTrack<Track>[]> {
+  try {
+    await clearAccessTokenCookie();
+    const res = await spotifyApi.playlists.getPlaylistItems(id);
+
+    if (res) {
+      return res.items;
+    } else {
+      throw new Error("Failed to fetch tracks from playlist");
+    }
+  } catch (error) {
+    const e = error as Error;
+    throw new Error(
+      `Failed to fetch tracks from playlist. Error: ${e.message}`
+    );
+  }
+}
+
+async function clearAccessTokenCookie() {
+  cookies().delete("access_token");
+  const tokenRes = await spotifyApi.getAccessToken();
+  cookies().set("access_token", tokenRes?.access_token ?? "");
 }
